@@ -1,0 +1,45 @@
+.app {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.test-example-list {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  max-width: 700px;
+}
+
+.test-example-item {
+  display: flex;
+  border: 1px solid #000000;
+  margin-right: 5px;
+  margin-bottom: 5px;
+}
+
+.test-example-item-prediction {
+  color: #FFFFFF;
+  height: 56px;
+  width: 56px;
+}
+
+.prediction-digit {
+  margin: 3px;
+  font-size: 28px;
+}
+
+.prediction-probability {
+  font-size: 8px;
+}
+
+.pixel-row {
+  display: flex;
+}
+
+.pixel {
+  width: 2px;
+  height: 2px;
+}
