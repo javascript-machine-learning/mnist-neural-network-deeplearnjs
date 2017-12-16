@@ -1,5 +1,5 @@
 {
-  "name": "complementary-colors-deeplearn-js",
+  "name": "mnist-neural-network-deeplearnjs",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
