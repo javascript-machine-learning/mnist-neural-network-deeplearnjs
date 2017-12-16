@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import mnist from 'mnist';
+import mnist from './mnist';
 
 import './App.css';
 
@@ -17,8 +17,8 @@ class App extends Component {
 
   constructor() {
     super();
-
     const { training, test } = mnist.set(TRAINING_SET_SIZE, TEST_SET_SIZE);
+
     this.testSet = test;
     this.trainingSet = training;
 

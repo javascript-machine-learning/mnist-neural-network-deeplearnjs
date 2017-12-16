@@ -4,12 +4,12 @@
   "private": true,
   "dependencies": {
     "deeplearn": "0.3.13",
-    "mnist": "^1.1.0",
     "react": "^16.1.1",
     "react-dom": "^16.1.1",
     "react-scripts": "1.0.17"
   },
   "scripts": {
+    "postinstall": "ln -s '../data' node_modules/data",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
