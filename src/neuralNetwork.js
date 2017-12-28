@@ -4,13 +4,14 @@ import {
   Graph,
   Session,
   SGDOptimizer,
-  NDArrayMathGPU,
+  ENV,
+  NDArrayMath,
   CostReduction,
 } from 'deeplearn';
 
-const math = new NDArrayMathGPU();
-
 class MnistModel {
+  math = ENV.math;
+
   session;
 
   initialLearningRate = 0.06;
@@ -42,24 +43,29 @@ class MnistModel {
     this.predictionTensor = this.createFullyConnectedLayer(graph, fullyConnectedLayer, 3, 10);
     this.costTensor = graph.meanSquaredCost(this.targetTensor, this.predictionTensor);
 
-    this.session = new Session(graph, math);
+    this.session = new Session(graph, this.math);
 
     this.prepareTrainingSet(trainingSet);
   }
 
   prepareTrainingSet(trainingSet) {
-    math.scope(() => {
-      const inputArray = trainingSet.map(v => Array1D.new(v.input));
-      const targetArray = trainingSet.map(v => Array1D.new(v.output));
+    const oldMath = ENV.math;
+    const safeMode = false;
+    const math = new NDArrayMath('cpu', safeMode);
+    ENV.setMath(math);
 
-      const shuffledInputProviderBuilder = new InCPUMemoryShuffledInputProviderBuilder([ inputArray, targetArray ]);
-      const [ inputProvider, targetProvider ] = shuffledInputProviderBuilder.getInputProviders();
+    const inputArray = trainingSet.map(v => Array1D.new(v.input));
+    const targetArray = trainingSet.map(v => Array1D.new(v.output));
 
-      this.feedEntries = [
-        { tensor: this.inputTensor, data: inputProvider },
-        { tensor: this.targetTensor, data: targetProvider },
-      ];
-    });
+    const shuffledInputProviderBuilder = new InCPUMemoryShuffledInputProviderBuilder([ inputArray, targetArray ]);
+    const [ inputProvider, targetProvider ] = shuffledInputProviderBuilder.getInputProviders();
+
+    this.feedEntries = [
+      { tensor: this.inputTensor, data: inputProvider },
+      { tensor: this.targetTensor, data: targetProvider },
+    ];
+
+    ENV.setMath(oldMath);
   }
 
   train(step, computeCost) {
@@ -67,7 +73,7 @@ class MnistModel {
     this.optimizer.setLearningRate(learningRate);
 
     let costValue;
-    math.scope(() => {
+    this.math.scope(() => {
       const cost = this.session.train(
         this.costTensor,
         this.feedEntries,
@@ -87,7 +93,7 @@ class MnistModel {
   predict(pixels) {
     let classifier = [];
 
-    math.scope(() => {
+    this.math.scope(() => {
       const mapping = [{
         tensor: this.inputTensor,
         data: Array1D.new(pixels),
