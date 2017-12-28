@@ -1,5 +1,7 @@
 # MNIST Digit Recognition Neural Network in JavaScript with Deeplearn.js
 
+[![Build Status](https://travis-ci.org/javascript-machine-learning/mnist-neural-network-deeplearnjs.svg?branch=master)](https://travis-ci.org/javascript-machine-learning/mnist-neural-network-deeplearnjs)
+
 Use Case: Recognizing handwritten digits from the [MNIST Database](https://en.wikipedia.org/wiki/MNIST_database).
 
 This example project demonstrates how neural networks may be used to solve a multi-class classification problem. It uses [deeplearn.js](https://deeplearnjs.org/) to recognize handwritten digits from the MNIST database.
